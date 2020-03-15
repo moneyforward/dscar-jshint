@@ -1,0 +1,3 @@
+description: Install JSHint
+steps:
+  - run: sudo npm install --global jshint
