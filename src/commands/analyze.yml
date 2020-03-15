@@ -30,6 +30,10 @@ parameters:
     type: enum
     enum: ["/dev/stdout", "/dev/stderr", "/dev/null"]
     default: "/dev/null"
+  max-procs:
+    description: Specify the maximum number of processes to run at the same time
+    type: integer
+    default: 1
 steps:
   - dscar/analyze:
       step-name: Analyze code statically using JSHint
