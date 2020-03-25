@@ -50,17 +50,21 @@ steps:
 
               REPORTER_PATH=$(mktemp)
               echo 'exports.reporter = (results) => console.log(JSON.stringify(results));' > "${REPORTER_PATH}"
-              cat \<<-EOT >> $BASH_ENV
-              export ANALYSIS_ARGUMENTS=(
-                jshint
-                --reporter
-                "${REPORTER_PATH}"
-              )
-              export TRANSFORMATION_ARGUMENTS=(
-                -srM
-                'flatten | map(@html "<file name=\"\(.file)\"><error message=\"\(.error.reason)\" line=\"\(.error.line)\" column=\"\(.error.character)\" severity=\"\(if (.error.code | startswith("I")) then "info" elif (.error.code | startswith("W")) then "warning" else "error" end)\" source=\"jshint.\(.error.code)\" /></file>") | "<checkstyle>\(join(""))</checkstyle>"'
-              )
+              declare -ax ANALYSIS_ARGUMENTS=( jshint --reporter "${REPORTER_PATH}" )
+              echo "$(declare -p ANALYSIS_ARGUMENTS)" >> $BASH_ENV
+
+              FILTER="$(
+              cat \<<-"EOT" | tr -s ' \n' ' '
+              flatten | map(@html "<file name=\"\(.file)\">
+              <error
+                message=\"\(.error.reason)\" line=\"\(.error.line)\" column=\"\(.error.character)\"
+                severity=\"\(if (.error.code | startswith("I")) then "info" elif (.error.code | startswith("W")) then "warning" else "error" end)\"
+                source=\"jshint.\(.error.code)\" />
+              </file>") | "<checkstyle>\(join(""))</checkstyle>"
               EOT
+              )"
+              declare -ax TRANSFORMATION_ARGUMENTS=( -srM "$FILTER" )
+              echo "$(declare -p TRANSFORMATION_ARGUMENTS)" >> $BASH_ENV
         - steps: << parameters.prepare >>
       analysis-command: npx
       error-pattern: << parameters.error-pattern >>
