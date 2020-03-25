@@ -1,4 +1,4 @@
-NAMESPACE = naokikimura
+NAMESPACE = moneyforward
 ORB = $(NAMESPACE)/dscar-jshint
 VERSION = dev:alpha
 SEGMENT = patch
