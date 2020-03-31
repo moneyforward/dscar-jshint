@@ -43,6 +43,7 @@ steps:
       step-name: Analyze code statically using JSHint
       analysis-name: JSHint
       prepare:
+        - steps: << parameters.prepare >>
         - run:
             name: export ANALYSIS_ARGUMENTS TRANSFORMATION_ARGUMENTS
             command: |
@@ -65,7 +66,6 @@ steps:
               )"
               declare -ax TRANSFORMATION_ARGUMENTS=( -srM "$FILTER" )
               echo "$(declare -p TRANSFORMATION_ARGUMENTS)" >> $BASH_ENV
-        - steps: << parameters.prepare >>
       analysis-command: npx
       error-pattern: << parameters.error-pattern >>
       transformation-command: jq
