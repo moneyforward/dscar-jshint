@@ -1,5 +1,7 @@
 # dscar-jshint
 
+[![CircleCI](https://circleci.com/gh/moneyforward/dscar-jshint.svg?style=svg)](https://circleci.com/gh/moneyforward/dscar-jshint)
+
 Delta [JSHint](https://jshint.com/) reports running on CircleCI
 
 See https://circleci.com/orbs/registry/orb/moneyforward/dscar-jshint for details.
